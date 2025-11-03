@@ -15,7 +15,6 @@ export async function updateCodingGoodsItem(
   try {
     console.log("شروع بروزرسانی آیتم:", itemId, updates);
     
-    // استفاده از GUID اگر موجود باشد، در غیر این صورت از Title
     const listEndpoint = LIST_GUID 
       ? `guid('${LIST_GUID}')` 
       : `getbytitle('${LIST_TITLE}')`;
