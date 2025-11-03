@@ -27,33 +27,38 @@
 
 ### پیش‌نیازها
 
-- Node.js 18+ 
+- Node.js 18+
 - npm یا yarn
 
 ### مراحل نصب
 
 1. نصب وابستگی‌ها:
+
 ```bash
 npm install
 ```
 
 2. ایجاد فایل `.env` در ریشه پروژه:
+
 ```env
-VITE_SHAREPOINT_BASE_URL=https://portal.zarsim.com
-VITE_SHAREPOINT_LIST_TITLE=codinggoods
+VITE_SHAREPOINT_BASE_URL
+VITE_SHAREPOINT_LIST_GUID
 ```
 
 3. اجرای پروژه در حالت توسعه:
+
 ```bash
 npm run dev
 ```
 
 4. ساخت نسخه production:
+
 ```bash
 npm run build
 ```
 
 5. پیش‌نمایش نسخه build شده:
+
 ```bash
 npm run preview
 ```
@@ -62,10 +67,10 @@ npm run preview
 
 برای امنیت بیشتر، URL های SharePoint را در فایل `.env` قرار دهید:
 
-| متغیر | توضیحات | مقدار پیش‌فرض |
-|------|---------|---------------|
-| `VITE_SHAREPOINT_BASE_URL` | آدرس پایه SharePoint | `https://portal.zarsim.com` |
-| `VITE_SHAREPOINT_LIST_TITLE` | نام لیست SharePoint | `codinggoods` |
+| متغیر                       | توضیحات              | مقدار پیش‌فرض |
+| --------------------------- | -------------------- | ------------- |
+| `VITE_SHAREPOINT_BASE_URL`  | آدرس پایه SharePoint |
+| `VITE_SHAREPOINT_LIST_GUID` | نام لیست SharePoint  |
 
 **نکته مهم:** فایل `.env` در `.gitignore` قرار دارد و commit نمی‌شود. برای تیم خود یک فایل `.env.example` ایجاد کنید.
 
@@ -104,6 +109,7 @@ src/
 ### ESLint
 
 برای بررسی کد:
+
 ```bash
 npm run lint
 ```
