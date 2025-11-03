@@ -143,8 +143,8 @@ export const SearchableSelect: React.FC<ISearchableSelectProps> = ({
               onClick={disabled ? undefined : handleClear}
               className={`bg-transparent border-none text-lg px-2 py-1 rounded transition-all leading-none ${
                 disabled
-                  ? "text-gray-300 cursor-not-allowed opacity-50"
-                  : "text-gray-400 cursor-pointer hover:bg-gray-100 hover:text-gray-800"
+                  ? "text-red-300 cursor-not-allowed opacity-50"
+                  : "text-red-400 cursor-pointer hover:bg-gray-100 hover:text-gray-800"
               }`}
             >
               ×
@@ -156,8 +156,8 @@ export const SearchableSelect: React.FC<ISearchableSelectProps> = ({
               isOpen ? "rotate-180" : "rotate-0"
             } ${
               disabled
-                ? "text-gray-400 cursor-not-allowed opacity-50"
-                : "text-gray-600 cursor-pointer hover:bg-gray-100 hover:text-gray-800"
+                ? "text-green-400 cursor-not-allowed opacity-50"
+                : "text-green-600 cursor-pointer hover:bg-gray-100 hover:text-gray-800"
             }`}
           >
             ▼
