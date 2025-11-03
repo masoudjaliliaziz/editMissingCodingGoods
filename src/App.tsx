@@ -74,10 +74,10 @@ function App() {
           </div>
           <div
             onClick={field.isSaving ? undefined : field.handleCancel}
-            className={`px-4 py-2 bg-gray-500 text-white rounded-lg transition-colors text-sm font-medium ${
+            className={`px-4 py-2 bg-red-400 text-white rounded-lg transition-colors text-sm font-medium ${
               field.isSaving
                 ? "opacity-60 cursor-not-allowed"
-                : "hover:bg-gray-600 cursor-pointer"
+                : "hover:bg-red-600 cursor-pointer"
             }`}
           >
             لغو
