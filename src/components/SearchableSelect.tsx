@@ -37,7 +37,7 @@ export const SearchableSelect: React.FC<ISearchableSelectProps> = ({
     const newValue = e.target.value;
     setSearchTerm(newValue);
     setHighlightedIndex(-1);
-    setIsOpen(true); // همیشه dropdown را باز کن
+    setIsOpen(true);
   };
 
   const handleOptionSelect = (option: ICodingGoodsListItem) => {
@@ -139,25 +139,29 @@ export const SearchableSelect: React.FC<ISearchableSelectProps> = ({
         />
         <div className="flex items-center pr-2">
           {value && (
-            <button
-              type="button"
-              onClick={handleClear}
-              className="bg-transparent border-none text-lg text-gray-400 cursor-pointer px-2 py-1 rounded transition-all leading-none hover:bg-gray-100 hover:text-gray-800 disabled:cursor-not-allowed disabled:opacity-50"
-              disabled={disabled}
+            <div
+              onClick={disabled ? undefined : handleClear}
+              className={`bg-transparent border-none text-lg px-2 py-1 rounded transition-all leading-none ${
+                disabled
+                  ? "text-gray-300 cursor-not-allowed opacity-50"
+                  : "text-gray-400 cursor-pointer hover:bg-gray-100 hover:text-gray-800"
+              }`}
             >
               ×
-            </button>
+            </div>
           )}
-          <button
-            type="button"
-            onClick={() => setIsOpen(!isOpen)}
-            className={`bg-transparent border-none text-xs text-gray-600 cursor-pointer p-2 rounded transition-all ${
+          <div
+            onClick={disabled ? undefined : () => setIsOpen(!isOpen)}
+            className={`bg-transparent border-none text-xs p-2 rounded transition-all ${
               isOpen ? "rotate-180" : "rotate-0"
-            } hover:bg-gray-100 hover:text-gray-800 disabled:cursor-not-allowed disabled:opacity-50`}
-            disabled={disabled}
+            } ${
+              disabled
+                ? "text-gray-400 cursor-not-allowed opacity-50"
+                : "text-gray-600 cursor-pointer hover:bg-gray-100 hover:text-gray-800"
+            }`}
           >
             ▼
-          </button>
+          </div>
         </div>
       </div>
 
