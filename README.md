@@ -1,73 +1,113 @@
-# React + TypeScript + Vite
+# مدیریت کدهای انبار مشتری
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+یک برنامه React + TypeScript برای مدیریت و ویرایش کدهای انبار مشتری در SharePoint.
 
-Currently, two official plugins are available:
+## ویژگی‌ها
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 🔍 جستجو و انتخاب محصول از لیست SharePoint
+- ✏️ ویرایش سه فیلد جداگانه:
+  - کد ساز سیم (`codesaze`)
+  - کد ساز آرمان الکتریک ارگ (`codearman`)
+  - کد اسنوا (`codeesnova`)
+- 🎨 رابط کاربری مدرن با Tailwind CSS
+- 📱 طراحی Responsive
+- 🔔 اعلان‌های زیبا با React Toastify
+- ⚡ استفاده از React Query برای مدیریت state
 
-## React Compiler
+## تکنولوژی‌ها
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+- **React 19** - کتابخانه UI
+- **TypeScript** - نوع‌دهی استاتیک
+- **Vite** - Build tool سریع
+- **Tailwind CSS 4** - استایل‌دهی
+- **TanStack Query** - مدیریت state و caching
+- **React Toastify** - اعلان‌ها
 
-## Expanding the ESLint configuration
+## نصب و راه‌اندازی
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### پیش‌نیازها
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Node.js 18+ 
+- npm یا yarn
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### مراحل نصب
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+1. نصب وابستگی‌ها:
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+2. ایجاد فایل `.env` در ریشه پروژه:
+```env
+VITE_SHAREPOINT_BASE_URL=https://portal.zarsim.com
+VITE_SHAREPOINT_LIST_TITLE=codinggoods
 ```
+
+3. اجرای پروژه در حالت توسعه:
+```bash
+npm run dev
+```
+
+4. ساخت نسخه production:
+```bash
+npm run build
+```
+
+5. پیش‌نمایش نسخه build شده:
+```bash
+npm run preview
+```
+
+## تنظیمات Environment Variables
+
+برای امنیت بیشتر، URL های SharePoint را در فایل `.env` قرار دهید:
+
+| متغیر | توضیحات | مقدار پیش‌فرض |
+|------|---------|---------------|
+| `VITE_SHAREPOINT_BASE_URL` | آدرس پایه SharePoint | `https://portal.zarsim.com` |
+| `VITE_SHAREPOINT_LIST_TITLE` | نام لیست SharePoint | `codinggoods` |
+
+**نکته مهم:** فایل `.env` در `.gitignore` قرار دارد و commit نمی‌شود. برای تیم خود یک فایل `.env.example` ایجاد کنید.
+
+## ساختار پروژه
+
+```
+src/
+├── api/              # API calls به SharePoint
+│   └── getData.ts
+├── components/        # کامپوننت‌های قابل استفاده مجدد
+│   ├── Loading.tsx
+│   └── SearchableSelect.tsx
+├── hooks/             # Custom React Hooks
+│   ├── useCodingGoods.ts
+│   └── useUpdateCodingGoods.ts
+├── types/             # TypeScript interfaces
+│   └── apiTypes.ts
+├── App.tsx            # کامپوننت اصلی
+└── main.tsx           # نقطه ورود برنامه
+```
+
+## استفاده
+
+1. محصول مورد نظر را از لیست جستجو و انتخاب کنید
+2. اطلاعات محصول نمایش داده می‌شود
+3. روی دکمه "ویرایش" کنار هر فیلد کلیک کنید
+4. مقدار جدید را وارد کنید
+5. روی "ثبت" کلیک کنید تا تغییرات ذخیره شود
+
+## رنگ تم
+
+رنگ اصلی پروژه: `#0ead69` (سبز)
+
+## توسعه
+
+### ESLint
+
+برای بررسی کد:
+```bash
+npm run lint
+```
+
+## مجوز
+
+این پروژه برای استفاده داخلی شرکت زر سیم توسعه یافته است.
