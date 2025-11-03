@@ -1,22 +1,17 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { updateCodingGoodsItem } from "../api/getData";
-import type { ICodingGoodsListItem } from "../types/apiTypes";
-
-interface UpdateCodingGoodsParams {
-  itemId: number;
-  updates: Partial<ICodingGoodsListItem>;
-}
+import { updateCodingGoodsItem } from "../api/addData";
+import type { IUpdateCodingGoodsParams } from "../types/apiTypes";
 
 export function useUpdateCodingGoods() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ itemId, updates }: UpdateCodingGoodsParams) =>
+    mutationFn: ({ itemId, updates }: IUpdateCodingGoodsParams) =>
       updateCodingGoodsItem(itemId, updates),
     onSuccess: () => {
-      // Invalidate and refetch the coding goods data
       queryClient.invalidateQueries({ queryKey: ["codingGoodsTitle"] });
     },
+
     onError: (error) => {
       console.error("خطا در بروزرسانی آیتم:", error);
     },
