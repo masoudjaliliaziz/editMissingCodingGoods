@@ -62,33 +62,36 @@ function App() {
             className="flex-1 min-w-[200px] px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0ead69] focus:border-transparent text-sm"
             placeholder={placeholder}
           />
-          <button
-            type="button"
-            onClick={field.handleSave}
-            disabled={field.isSaving}
-            className="px-4 py-2 bg-[#0ead69] text-white rounded-lg hover:bg-[#0d9557] disabled:opacity-60 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+          <div
+            onClick={field.isSaving ? undefined : field.handleSave}
+            className={`px-4 py-2 bg-[#0ead69] text-white rounded-lg transition-colors text-sm font-medium ${
+              field.isSaving
+                ? "opacity-60 cursor-not-allowed"
+                : "hover:bg-[#0d9557] cursor-pointer"
+            }`}
           >
             {field.isSaving ? "در حال ذخیره..." : "ثبت"}
-          </button>
-          <button
-            type="button"
-            onClick={field.handleCancel}
-            disabled={field.isSaving}
-            className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 disabled:opacity-60 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+          </div>
+          <div
+            onClick={field.isSaving ? undefined : field.handleCancel}
+            className={`px-4 py-2 bg-gray-500 text-white rounded-lg transition-colors text-sm font-medium ${
+              field.isSaving
+                ? "opacity-60 cursor-not-allowed"
+                : "hover:bg-gray-600 cursor-pointer"
+            }`}
           >
             لغو
-          </button>
+          </div>
         </div>
       ) : (
         <div className="flex items-center gap-2">
           <span className="text-sm text-gray-600">{value || "تعریف نشده"}</span>
-          <button
-            type="button"
+          <div
             onClick={field.handleEdit}
             className="px-3 py-1 bg-[#0ead69] text-white rounded-lg hover:bg-[#0d9557] transition-colors text-xs font-medium"
           >
             ویرایش
-          </button>
+          </div>
         </div>
       )}
     </div>
@@ -111,9 +114,9 @@ function App() {
     <div className="min-h-screen bg-gray-50 py-8 px-4">
       <div className="max-w-4xl mx-auto">
         <div className="bg-[#0ead69] text-white rounded-lg shadow-lg mb-8 p-6">
-          <h1 className="text-2xl font-bold text-center">
+          <span className="text-2xl font-bold text-center text-white">
             مدیریت کدهای انبار مشتری
-          </h1>
+          </span>
         </div>
 
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
