@@ -1,16 +1,10 @@
 import React, { useState, useMemo, useRef, useEffect } from "react";
-import type { ICodingGoodsListItem } from "../types/apiTypes";
-import "./SearchableSelect.css";
+import type {
+  ICodingGoodsListItem,
+  ISearchableSelectProps,
+} from "../types/apiTypes";
 
-interface SearchableSelectProps {
-  options: ICodingGoodsListItem[];
-  value: ICodingGoodsListItem | null;
-  onChange: (option: ICodingGoodsListItem | null) => void;
-  placeholder?: string;
-  disabled?: boolean;
-}
-
-export const SearchableSelect: React.FC<SearchableSelectProps> = ({
+export const SearchableSelect: React.FC<ISearchableSelectProps> = ({
   options,
   value,
   onChange,
@@ -23,23 +17,26 @@ export const SearchableSelect: React.FC<SearchableSelectProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Filter options based on search term
   const filteredOptions = useMemo(() => {
     if (!searchTerm.trim()) return options;
 
-    return options.filter((option) =>
-      option.Title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const searchLower = searchTerm.toLowerCase();
+    return options.filter((option) => {
+      const titleMatch =
+        option.Title?.toLowerCase().includes(searchLower) || false;
+      const sharhMatch =
+        option.sharhmahsolbarayefactor?.toLowerCase().includes(searchLower) ||
+        false;
+      return titleMatch || sharhMatch;
+    });
   }, [options, searchTerm]);
 
-  // Handle input change
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
     setHighlightedIndex(-1);
     if (!isOpen) setIsOpen(true);
   };
 
-  // Handle option selection
   const handleOptionSelect = (option: ICodingGoodsListItem) => {
     onChange(option);
     setSearchTerm("");
@@ -47,7 +44,6 @@ export const SearchableSelect: React.FC<SearchableSelectProps> = ({
     setHighlightedIndex(-1);
   };
 
-  // Handle clear selection
   const handleClear = () => {
     onChange(null);
     setSearchTerm("");
@@ -55,7 +51,6 @@ export const SearchableSelect: React.FC<SearchableSelectProps> = ({
     setHighlightedIndex(-1);
   };
 
-  // Handle keyboard navigation
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!isOpen) {
       if (e.key === "ArrowDown" || e.key === "Enter") {
@@ -95,7 +90,6 @@ export const SearchableSelect: React.FC<SearchableSelectProps> = ({
     }
   };
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -111,7 +105,6 @@ export const SearchableSelect: React.FC<SearchableSelectProps> = ({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Focus input when dropdown opens
   useEffect(() => {
     if (isOpen && inputRef.current) {
       inputRef.current.focus();
@@ -119,8 +112,11 @@ export const SearchableSelect: React.FC<SearchableSelectProps> = ({
   }, [isOpen]);
 
   return (
-    <div className="searchable-select" ref={dropdownRef}>
-      <div className="select-input-container">
+    <div
+      className="relative w-full max-w-full md:max-w-[400px]"
+      ref={dropdownRef}
+    >
+      <div className="relative flex items-center border-2 border-gray-300 rounded-lg bg-white transition-colors focus-within:border-[#0ead69] focus-within:ring-2 focus-within:ring-[#0ead69]/20">
         <input
           ref={inputRef}
           type="text"
@@ -130,14 +126,15 @@ export const SearchableSelect: React.FC<SearchableSelectProps> = ({
           onFocus={() => setIsOpen(true)}
           placeholder={placeholder}
           disabled={disabled}
-          className="select-input"
+          className="flex-1 px-4 py-3 border-none outline-none text-base md:text-sm bg-transparent text-gray-800 placeholder:text-gray-400 disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed"
+          dir="rtl"
         />
-        <div className="select-actions">
+        <div className="flex items-center pr-2">
           {value && (
             <button
               type="button"
               onClick={handleClear}
-              className="clear-button"
+              className="bg-transparent border-none text-lg text-gray-400 cursor-pointer px-2 py-1 rounded transition-all leading-none hover:bg-gray-100 hover:text-gray-800 disabled:cursor-not-allowed disabled:opacity-50"
               disabled={disabled}
             >
               ×
@@ -146,7 +143,9 @@ export const SearchableSelect: React.FC<SearchableSelectProps> = ({
           <button
             type="button"
             onClick={() => setIsOpen(!isOpen)}
-            className={`dropdown-button ${isOpen ? "open" : ""}`}
+            className={`bg-transparent border-none text-xs text-gray-600 cursor-pointer p-2 rounded transition-all ${
+              isOpen ? "rotate-180" : "rotate-0"
+            } hover:bg-gray-100 hover:text-gray-800 disabled:cursor-not-allowed disabled:opacity-50`}
             disabled={disabled}
           >
             ▼
@@ -155,23 +154,32 @@ export const SearchableSelect: React.FC<SearchableSelectProps> = ({
       </div>
 
       {isOpen && (
-        <div className="select-dropdown">
+        <div className="absolute top-full left-0 right-0 bg-white border border-gray-300 rounded-lg shadow-lg z-[1000] max-h-[300px] overflow-hidden mt-1">
           {filteredOptions.length === 0 ? (
-            <div className="no-options">
+            <div className="p-4 text-center text-gray-400 text-sm italic">
               {searchTerm ? "هیچ نتیجه‌ای یافت نشد" : "هیچ گزینه‌ای موجود نیست"}
             </div>
           ) : (
-            <div className="options-list">
+            <div className="max-h-[300px] overflow-y-auto scrollbar-thin">
               {filteredOptions.map((option, index) => (
                 <div
                   key={option.ID}
-                  className={`option ${
-                    index === highlightedIndex ? "highlighted" : ""
+                  className={`px-4 py-3 cursor-pointer transition-colors border-b border-gray-100 last:border-b-0 ${
+                    index === highlightedIndex
+                      ? "bg-gray-100"
+                      : "bg-white hover:bg-gray-50 active:bg-gray-200"
                   }`}
                   onClick={() => handleOptionSelect(option)}
                   onMouseEnter={() => setHighlightedIndex(index)}
                 >
-                  {option.Title}
+                  <div className="font-semibold text-gray-800 mb-1">
+                    {option.Title}
+                  </div>
+                  {option.sharhmahsolbarayefactor && (
+                    <div className="text-xs text-gray-600 mt-1 leading-relaxed">
+                      {option.sharhmahsolbarayefactor}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
