@@ -5,7 +5,7 @@ import type {
   ICodingGoodsListItem,
   IUseEditFieldReturn,
 } from "../types/apiTypes";
-import { BASE_URL, LIST_TITLE } from "./base";
+import { BASE_URL, LIST_TITLE, LIST_GUID } from "./base";
 import { getFormDigest } from "./getFromDigest";
 
 export async function updateCodingGoodsItem(
@@ -14,8 +14,14 @@ export async function updateCodingGoodsItem(
 ): Promise<boolean> {
   try {
     console.log("شروع بروزرسانی آیتم:", itemId, updates);
+    
+    // استفاده از GUID اگر موجود باشد، در غیر این صورت از Title
+    const listEndpoint = LIST_GUID 
+      ? `guid('${LIST_GUID}')` 
+      : `getbytitle('${LIST_TITLE}')`;
+    
     const getResponse = await fetch(
-      `${BASE_URL}/_api/web/lists/getbytitle('${LIST_TITLE}')/items(${itemId})`,
+      `${BASE_URL}/_api/web/lists/${listEndpoint}/items(${itemId})`,
       {
         method: "GET",
         headers: {
@@ -44,7 +50,7 @@ export async function updateCodingGoodsItem(
 
     try {
       const updateResponse = await fetch(
-        `${BASE_URL}/_api/web/lists/getbytitle('${LIST_TITLE}')/items(${itemId})`,
+        `${BASE_URL}/_api/web/lists/${listEndpoint}/items(${itemId})`,
         {
           method: "POST",
           headers: {

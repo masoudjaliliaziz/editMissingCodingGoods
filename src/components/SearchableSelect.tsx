@@ -18,9 +18,11 @@ export const SearchableSelect: React.FC<ISearchableSelectProps> = ({
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const filteredOptions = useMemo(() => {
+    if (!options || options.length === 0) return [];
+
     if (!searchTerm.trim()) return options;
 
-    const searchLower = searchTerm.toLowerCase();
+    const searchLower = searchTerm.toLowerCase().trim();
     return options.filter((option) => {
       const titleMatch =
         option.Title?.toLowerCase().includes(searchLower) || false;
@@ -32,9 +34,10 @@ export const SearchableSelect: React.FC<ISearchableSelectProps> = ({
   }, [options, searchTerm]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
+    const newValue = e.target.value;
+    setSearchTerm(newValue);
     setHighlightedIndex(-1);
-    if (!isOpen) setIsOpen(true);
+    setIsOpen(true); // همیشه dropdown را باز کن
   };
 
   const handleOptionSelect = (option: ICodingGoodsListItem) => {
@@ -120,10 +123,15 @@ export const SearchableSelect: React.FC<ISearchableSelectProps> = ({
         <input
           ref={inputRef}
           type="text"
-          value={searchTerm || value?.Title || ""}
+          value={searchTerm !== "" ? searchTerm : value?.Title || ""}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
-          onFocus={() => setIsOpen(true)}
+          onFocus={() => {
+            setIsOpen(true);
+            if (!searchTerm && value?.Title) {
+              setSearchTerm(value.Title);
+            }
+          }}
           placeholder={placeholder}
           disabled={disabled}
           className="flex-1 px-4 py-3 border-none outline-none text-base md:text-sm bg-transparent text-gray-800 placeholder:text-gray-400 disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed"
@@ -155,9 +163,13 @@ export const SearchableSelect: React.FC<ISearchableSelectProps> = ({
 
       {isOpen && (
         <div className="absolute top-full left-0 right-0 bg-white border border-gray-300 rounded-lg shadow-lg z-[1000] max-h-[300px] overflow-hidden mt-1">
-          {filteredOptions.length === 0 ? (
+          {!options || options.length === 0 ? (
             <div className="p-4 text-center text-gray-400 text-sm italic">
-              {searchTerm ? "هیچ نتیجه‌ای یافت نشد" : "هیچ گزینه‌ای موجود نیست"}
+              هیچ گزینه‌ای موجود نیست
+            </div>
+          ) : filteredOptions.length === 0 ? (
+            <div className="p-4 text-center text-gray-400 text-sm italic">
+              هیچ نتیجه‌ای یافت نشد
             </div>
           ) : (
             <div className="max-h-[300px] overflow-y-auto scrollbar-thin">
