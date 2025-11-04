@@ -62,3 +62,8 @@ export interface ISearchableSelectProps {
   placeholder?: string;
   disabled?: boolean;
 }
+
+export interface ILoadOptions {
+  searchTerm?: string;
+  filterFields?: string[];
+}
