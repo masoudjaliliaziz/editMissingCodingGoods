@@ -12,14 +12,14 @@ export async function updateCodingGoodsItem(
   itemId: number,
   updates: Partial<ICodingGoodsListItem>
 ): Promise<boolean> {
+  let listEndpoint = LIST_GUID
+    ? `guid('${LIST_GUID}')`
+    : `getbytitle('${LIST_TITLE}')`;
+
+  let retryWithTitle = false;
+
   try {
-    console.log("شروع بروزرسانی آیتم:", itemId, updates);
-    
-    const listEndpoint = LIST_GUID 
-      ? `guid('${LIST_GUID}')` 
-      : `getbytitle('${LIST_TITLE}')`;
-    
-    const getResponse = await fetch(
+    let getResponse = await fetch(
       `${BASE_URL}/_api/web/lists/${listEndpoint}/items(${itemId})`,
       {
         method: "GET",
@@ -29,8 +29,30 @@ export async function updateCodingGoodsItem(
       }
     );
 
+    if (!getResponse.ok && !retryWithTitle && LIST_GUID) {
+      listEndpoint = `getbytitle('${LIST_TITLE}')`;
+      retryWithTitle = true;
+
+      getResponse = await fetch(
+        `${BASE_URL}/_api/web/lists/${listEndpoint}/items(${itemId})`,
+        {
+          method: "GET",
+          headers: {
+            Accept: "application/json;odata=verbose",
+          },
+        }
+      );
+    }
+
     if (!getResponse.ok) {
-      throw new Error(`خطا در دریافت آیتم: ${getResponse.statusText}`);
+      if (!retryWithTitle && LIST_GUID && getResponse.status === 404) {
+        return await updateCodingGoodsItemWithTitle(itemId, updates);
+      }
+
+      const errorText = await getResponse.text();
+      throw new Error(
+        `خطا در دریافت آیتم: ${getResponse.status} ${getResponse.statusText} - ${errorText}`
+      );
     }
 
     const currentItem = await getResponse.json();
@@ -67,6 +89,11 @@ export async function updateCodingGoodsItem(
       clearTimeout(timeoutId);
 
       if (!updateResponse.ok) {
+        if (!retryWithTitle && LIST_GUID && updateResponse.status === 404) {
+          clearTimeout(timeoutId);
+          return await updateCodingGoodsItemWithTitle(itemId, updates);
+        }
+
         const errorText = await updateResponse.text();
         throw new Error(
           `خطا در بروزرسانی آیتم: ${updateResponse.statusText} - ${errorText}`
@@ -83,7 +110,98 @@ export async function updateCodingGoodsItem(
     }
   } catch (err) {
     console.error("خطا در بروزرسانی آیتم:", err);
+
+    if (!retryWithTitle && LIST_GUID && err instanceof Error) {
+      const errorWithStatus = err as Error & { status?: number };
+      const isNotFoundError =
+        err.message.includes("Not Found") ||
+        err.message.includes("404") ||
+        errorWithStatus.status === 404;
+
+      if (isNotFoundError) {
+        try {
+          return await updateCodingGoodsItemWithTitle(itemId, updates);
+        } catch (retryErr) {
+          console.error("خطا در retry بروزرسانی:", retryErr);
+          throw retryErr;
+        }
+      }
+    }
+
     throw err;
+  }
+}
+
+async function updateCodingGoodsItemWithTitle(
+  itemId: number,
+  updates: Partial<ICodingGoodsListItem>
+): Promise<boolean> {
+  const listEndpoint = `getbytitle('${LIST_TITLE}')`;
+
+  const getResponse = await fetch(
+    `${BASE_URL}/_api/web/lists/${listEndpoint}/items(${itemId})`,
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json;odata=verbose",
+      },
+    }
+  );
+
+  if (!getResponse.ok) {
+    const errorText = await getResponse.text();
+    throw new Error(
+      `خطا در دریافت آیتم: ${getResponse.statusText} - ${errorText}`
+    );
+  }
+
+  const currentItem = await getResponse.json();
+  const etag = currentItem.d.__metadata.etag;
+  const contentType = currentItem.d.__metadata.type;
+
+  const updatePayload = {
+    ...updates,
+    __metadata: {
+      type: contentType,
+    },
+  };
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 30000);
+
+  try {
+    const updateResponse = await fetch(
+      `${BASE_URL}/_api/web/lists/${listEndpoint}/items(${itemId})`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json;odata=verbose",
+          "Content-Type": "application/json;odata=verbose",
+          "X-HTTP-Method": "MERGE",
+          "If-Match": etag,
+          "X-RequestDigest": await getFormDigest(),
+        },
+        body: JSON.stringify(updatePayload),
+        signal: controller.signal,
+      }
+    );
+
+    clearTimeout(timeoutId);
+
+    if (!updateResponse.ok) {
+      const errorText = await updateResponse.text();
+      throw new Error(
+        `خطا در بروزرسانی آیتم: ${updateResponse.statusText} - ${errorText}`
+      );
+    }
+
+    return true;
+  } catch (error: unknown) {
+    clearTimeout(timeoutId);
+    if (error instanceof Error && error.name === "AbortError") {
+      throw new Error("درخواست بروزرسانی timeout شد");
+    }
+    throw error;
   }
 }
 
