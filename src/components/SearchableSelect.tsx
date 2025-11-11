@@ -119,7 +119,7 @@ export const SearchableSelect: React.FC<ISearchableSelectProps> = ({
       className="relative w-full max-w-full md:max-w-[400px]"
       ref={dropdownRef}
     >
-      <div className="relative flex items-center border-2 border-gray-300 rounded-lg bg-white transition-colors focus-within:border-[#0ead69] focus-within:ring-2 focus-within:ring-[#0ead69]/20">
+      <div className="relative flex items-center border-2 border-gray-300 rounded-lg bg-white transition-colors focus-within:border-[#1e7677] focus-within:ring-2 focus-within:ring-[#1e7677]/20">
         <input
           ref={inputRef}
           type="text"
@@ -156,8 +156,8 @@ export const SearchableSelect: React.FC<ISearchableSelectProps> = ({
               isOpen ? "rotate-180" : "rotate-0"
             } ${
               disabled
-                ? "text-green-400 cursor-not-allowed opacity-50"
-                : "text-green-600 cursor-pointer hover:bg-gray-100 hover:text-gray-800"
+                ? "text-[#1e7677] cursor-not-allowed opacity-50"
+                : "text-[#165758] cursor-pointer hover:bg-gray-100 hover:text-gray-800"
             }`}
           >
             ▼

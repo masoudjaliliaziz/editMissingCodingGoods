@@ -59,15 +59,15 @@ function App() {
             type="text"
             value={field.editingValue}
             onChange={(e) => field.setEditingValue(e.target.value)}
-            className="flex-1 min-w-[200px] px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0ead69] focus:border-transparent text-sm"
+            className="flex-1 min-w-[200px] px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1e7677] focus:border-transparent text-sm"
             placeholder={placeholder}
           />
           <div
             onClick={field.isSaving ? undefined : field.handleSave}
-            className={`px-4 py-2 bg-[#0ead69] text-white rounded-lg transition-colors text-sm font-medium ${
+            className={`px-4 py-2 bg-[#1e7677] text-white rounded-lg transition-colors text-sm font-medium ${
               field.isSaving
                 ? "opacity-60 cursor-not-allowed"
-                : "hover:bg-[#0d9557] cursor-pointer"
+                : "hover:bg-[#155253] cursor-pointer"
             }`}
           >
             {field.isSaving ? "در حال ذخیره..." : "ثبت"}
@@ -88,7 +88,7 @@ function App() {
           <span className="text-sm text-gray-600">{value || "تعریف نشده"}</span>
           <div
             onClick={field.handleEdit}
-            className="px-3 py-1 bg-[#0ead69] text-white rounded-lg hover:bg-[#0d9557] transition-colors text-xs font-medium"
+            className="px-3 py-1 bg-[#1e7677] text-white rounded-lg hover:bg-[#165a5b] transition-colors text-xs font-medium"
           >
             ویرایش
           </div>
@@ -113,7 +113,7 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4">
       <div className="max-w-4xl mx-auto">
-        <div className="bg-[#0ead69] text-white rounded-lg shadow-lg mb-8 p-6">
+        <div className="bg-[#1e7677] text-white rounded-lg shadow-lg mb-8 p-6">
           <span className="text-2xl font-bold text-center text-white">
             مدیریت کدهای انبار مشتری
           </span>

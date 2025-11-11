@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 :root {
-  --primary-color: #0ead69;
-  --primary-hover: #0d9557;
-  --primary-light: #0ead6915;
+  --primary-color: #1e7677;
+  --primary-hover: #185c5d;
+  --primary-light: #1e767715;
 }
 
 * {
@@ -25,7 +25,6 @@ body {
   width: 100%;
 }
 
-/* Custom scrollbar for SearchableSelect */
 .scrollbar-thin::-webkit-scrollbar {
   width: 6px;
 }
