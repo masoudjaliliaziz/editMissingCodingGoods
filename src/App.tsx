@@ -20,8 +20,8 @@ function App() {
   const codesazeField = useEditField(
     selectedItem,
     "codesaze",
-    "کد ساز سیم با موفقیت بروزرسانی شد!",
-    "خطا در بروزرسانی کد ساز سیم!",
+    "کد سازه سیم با موفقیت بروزرسانی شد!",
+    "خطا در بروزرسانی کد سازه سیم!",
     setSelectedItem
   );
 
@@ -41,6 +41,14 @@ function App() {
     setSelectedItem
   );
 
+  const codePooyeshField = useEditField(
+    selectedItem,
+    "codePooyesh",
+    "کد سازه پویش با موفقیت بروزرسانی شد!",
+    "خطا در بروزرسانی کد سازه پویش!",
+    setSelectedItem
+  );
+
   const renderFieldEditor = (
     label: string,
     value: string | null | undefined,
@@ -49,7 +57,7 @@ function App() {
   ) => (
     <div className="mb-4">
       <div className="flex items-center justify-between mb-2">
-        <strong className="text-gray-700 text-sm font-semibold">
+        <strong className="text-gray-700 text-base font-semibold">
           {label}:
         </strong>
       </div>
@@ -59,7 +67,7 @@ function App() {
             type="text"
             value={field.editingValue}
             onChange={(e) => field.setEditingValue(e.target.value)}
-            className="flex-1 min-w-[200px] px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1e7677] focus:border-transparent text-sm"
+            className="flex-1 max-w-[250px] px-3 py-2 border h-10 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1e7677] focus:border-transparent text-sm"
             placeholder={placeholder}
           />
           <div
@@ -141,21 +149,21 @@ function App() {
               <strong className="text-gray-700 text-sm font-semibold">
                 شرح محصول:
               </strong>
-              <p className="text-gray-600 text-sm mt-1">
+              <p className="text-gray-600 text-base mt-1">
                 {selectedItem.sharhmahsolbarayefactor || "تعریف نشده"}
               </p>
             </div>
 
             <div className="border-t border-gray-200 pt-4 mt-4">
               {renderFieldEditor(
-                "کد ساز سیم",
+                "کد سازه سیم",
                 selectedItem.codesaze,
                 codesazeField,
-                "کد ساز سیم را وارد کنید..."
+                "کد سازه سیم را وارد کنید..."
               )}
 
               {renderFieldEditor(
-                "کد ساز آرمان الکتریک ارگ",
+                "کد آرمان الکتریک ارگ",
                 selectedItem.codearman,
                 codearmanField,
                 "کد محصول آرمان الکتریک ارگ را وارد کنید..."
@@ -166,6 +174,13 @@ function App() {
                 selectedItem.codeesnova,
                 codeesnovaField,
                 "کد اسنوا را وارد کنید..."
+              )}
+
+              {renderFieldEditor(
+                "کد سازه پویش",
+                selectedItem.codePooyesh,
+                codePooyeshField,
+                "کد سازه پویش را وارد کنید..."
               )}
             </div>
 

@@ -207,7 +207,7 @@ async function updateCodingGoodsItemWithTitle(
 
 export function useEditField(
   selectedItem: ICodingGoodsListItem | null,
-  fieldName: "codesaze" | "codearman" | "codeesnova",
+  fieldName: "codesaze" | "codearman" | "codeesnova" | "codePooyesh",
   successMessage: string,
   errorMessage: string,
   onUpdate: (item: ICodingGoodsListItem) => void

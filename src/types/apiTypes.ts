@@ -27,6 +27,7 @@ export interface ICodingGoodsListItem {
   codegroup: string;
   codemgroup: string;
   codesaze: string | null;
+  codePooyesh: string | null;
   codevahed: string;
   coding: string;
   emailcre: number;
