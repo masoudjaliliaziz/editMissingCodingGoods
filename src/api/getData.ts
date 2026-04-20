@@ -1,5 +1,5 @@
-import type { ICodingGoodsListItem, ILoadOptions } from "../types/apiTypes";
 import { BASE_URL, LIST_TITLE, LIST_GUID } from "./base";
+import type { ICodingGoodsListItem, ILoadOptions } from "../types/apiTypes";
 
 export async function loadCodingGoodsTitle(
   options?: ILoadOptions

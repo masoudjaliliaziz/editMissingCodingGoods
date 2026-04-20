@@ -1,4 +1,5 @@
 export const Loading = () => {
+
   return (
     <div className="flex flex-col items-center justify-center min-h-52 bg-gray-50">
       <div className="relative w-20 h-20">

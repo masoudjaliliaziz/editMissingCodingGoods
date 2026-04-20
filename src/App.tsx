@@ -1,9 +1,9 @@
+import { useState } from "react";
+import { useEditField } from "./api/addData";
+import { Loading } from "./components/Loading";
+import type { ICodingGoodsListItem } from "./types/apiTypes";
 import { useCodingGoodsTitle } from "./hooks/useCodingGoods";
 import { SearchableSelect } from "./components/SearchableSelect";
-import { Loading } from "./components/Loading";
-import { useEditField } from "./api/addData";
-import { useState } from "react";
-import type { ICodingGoodsListItem } from "./types/apiTypes";
 
 function App() {
   const {
@@ -72,21 +72,19 @@ function App() {
           />
           <div
             onClick={field.isSaving ? undefined : field.handleSave}
-            className={`px-4 py-2 bg-[#1e7677] text-white rounded-lg transition-colors text-sm font-medium ${
-              field.isSaving
+            className={`px-4 py-2 bg-[#1e7677] text-white rounded-lg transition-colors text-sm font-medium ${field.isSaving
                 ? "opacity-60 cursor-not-allowed"
                 : "hover:bg-[#155253] cursor-pointer"
-            }`}
+              }`}
           >
             {field.isSaving ? "در حال ذخیره..." : "ثبت"}
           </div>
           <div
             onClick={field.isSaving ? undefined : field.handleCancel}
-            className={`px-4 py-2 bg-red-400 text-white rounded-lg transition-colors text-sm font-medium ${
-              field.isSaving
+            className={`px-4 py-2 bg-red-400 text-white rounded-lg transition-colors text-sm font-medium ${field.isSaving
                 ? "opacity-60 cursor-not-allowed"
                 : "hover:bg-red-600 cursor-pointer"
-            }`}
+              }`}
           >
             لغو
           </div>

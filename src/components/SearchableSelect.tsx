@@ -141,24 +141,21 @@ export const SearchableSelect: React.FC<ISearchableSelectProps> = ({
           {value && (
             <div
               onClick={disabled ? undefined : handleClear}
-              className={`bg-transparent border-none text-lg px-2 py-1 rounded transition-all leading-none ${
-                disabled
+              className={`bg-transparent border-none text-lg px-2 py-1 rounded transition-all leading-none ${disabled
                   ? "text-red-300 cursor-not-allowed opacity-50"
                   : "text-red-400 cursor-pointer hover:bg-gray-100 hover:text-gray-800"
-              }`}
+                }`}
             >
               ×
             </div>
           )}
           <div
             onClick={disabled ? undefined : () => setIsOpen(!isOpen)}
-            className={`bg-transparent border-none text-xs p-2 rounded transition-all ${
-              isOpen ? "rotate-180" : "rotate-0"
-            } ${
-              disabled
+            className={`bg-transparent border-none text-xs p-2 rounded transition-all ${isOpen ? "rotate-180" : "rotate-0"
+              } ${disabled
                 ? "text-[#1e7677] cursor-not-allowed opacity-50"
                 : "text-[#165758] cursor-pointer hover:bg-gray-100 hover:text-gray-800"
-            }`}
+              }`}
           >
             ▼
           </div>
@@ -180,11 +177,10 @@ export const SearchableSelect: React.FC<ISearchableSelectProps> = ({
               {filteredOptions.map((option, index) => (
                 <div
                   key={option.ID}
-                  className={`px-4 py-3 cursor-pointer transition-colors border-b border-gray-100 last:border-b-0 ${
-                    index === highlightedIndex
+                  className={`px-4 py-3 cursor-pointer transition-colors border-b border-gray-100 last:border-b-0 ${index === highlightedIndex
                       ? "bg-gray-100"
                       : "bg-white hover:bg-gray-50 active:bg-gray-200"
-                  }`}
+                    }`}
                   onClick={() => handleOptionSelect(option)}
                   onMouseEnter={() => setHighlightedIndex(index)}
                 >
